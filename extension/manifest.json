@@ -1,0 +1,47 @@
+{
+  "name": "Shinigami Eyes Anti-Semitism Version",
+  "author": "ChloeTheBitch",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "description": "highlights Anti-Semitic and Jewish-friendly subreddits/users/facebook pages/groups with different colors.",
+  "content_scripts": [
+    {
+      "matches": [
+                "*://*.facebook.com/*",
+                "*://*.youtube.com/*",
+                "*://*.reddit.com/*",
+                "*://*.twitter.com/*",
+                "*://*.medium.com/*",
+                "*://disqus.com/*",
+                "*://*.tumblr.com/*",
+                "*://*.wikipedia.org/*",
+                "*://*.rationalwiki.org/*",
+                "*://shinigami-eyes.localhost/*",
+
+                "*://duckduckgo.com/*",
+                "*://*.bing.com/*",
+
+                "*://*.google.ar/*",
+                "*://*.google.at/*",
+                "*://*.google.be/*",
+                "*://*.google.ca/*",
+                "*://*.google.ch/*",
+                "*://*.google.co.uk/*",
+                "*://*.google.com/*",
+                "*://*.google.de/*",
+                "*://*.google.dk/*",
+                "*://*.google.es/*",
+                "*://*.google.fi/*",
+                "*://*.google.fr/*",
+                "*://*.google.is/*",
+                "*://*.google.it/*",
+                "*://*.google.no/*",
+                "*://*.google.pt/*",
+                "*://*.google.se/*"
+            ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ]
+}
