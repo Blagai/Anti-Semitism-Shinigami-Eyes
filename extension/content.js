@@ -10,7 +10,6 @@ chrome.runtime.sendMessage({ action: 'highlightLinks' }, (response) => {
     friendlyLinks.forEach((link) => {
       const elements = document.querySelectorAll(`a[href*="${link}"]`);
 	  
-	  // This is the part that doesn't do anything
       elements.forEach((element) => {
         element.style.color = 'green';
 		console.log("Changed colour");
