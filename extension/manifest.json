@@ -39,7 +39,6 @@
                 "*://*.google.no/*",
                 "*://*.google.pt/*",
                 "*://*.google.se/*",
-				"file:///C:/Users/Chloe/Desktop/glob.html"
             ],
       "js": [
         "content.js"
