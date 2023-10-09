@@ -2,6 +2,7 @@
   "name": "Shinigami Eyes Anti-Semitism Version",
   "author": "ChloeTheBitch",
   "version": "0.0.1",
+  "permissions": ["activeTab", "contextMenus", "storage", "scripting"],
   "manifest_version": 3,
   "description": "highlights Anti-Semitic and Jewish-friendly subreddits/users/facebook pages/groups with different colors.",
   "content_scripts": [
@@ -37,11 +38,16 @@
                 "*://*.google.it/*",
                 "*://*.google.no/*",
                 "*://*.google.pt/*",
-                "*://*.google.se/*"
+                "*://*.google.se/*",
+				"file:///C:/Users/Chloe/Desktop/glob.html"
             ],
       "js": [
         "content.js"
-      ]
+      ],
+	  "run_at": "document_end"
     }
-  ]
+  ],
+    "background": {
+    "service_worker": "background.js"
+  }
 }
