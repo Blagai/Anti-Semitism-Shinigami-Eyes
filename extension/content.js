@@ -5,13 +5,14 @@ chrome.runtime.sendMessage({ action: 'highlightLinks' }, (response) => {
     const friendlyLinks = response.linksToHighlight;
 	
 	console.log('Friendly users loaded:', friendlyLinks);
+	const isYouTube = window.location.hostname.includes('youtube.com');
 
     // Highlight the friendly links on the webpage.
     friendlyLinks.forEach((link) => {
       const elements = document.querySelectorAll(`a[href*="${link}"]`);
 	  
       elements.forEach((element) => {
-        element.style.color = 'green';
+        element.style.color = 'green !important';
 		console.log("Changed colour");
       });
     });

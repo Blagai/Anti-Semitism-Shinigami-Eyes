@@ -38,7 +38,7 @@
                 "*://*.google.it/*",
                 "*://*.google.no/*",
                 "*://*.google.pt/*",
-                "*://*.google.se/*",
+                "*://*.google.se/*"
             ],
       "js": [
         "content.js"
