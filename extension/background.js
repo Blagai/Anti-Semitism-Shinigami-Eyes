@@ -16,7 +16,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 // Context menu click handling
 chrome.contextMenus.onClicked.addListener((info, tab) => {
 	if (info.menuItemId === "WriteAnti") {
-		WriteToAnti(info.linkUrl);
+		WriteToAnti(info.linkUrl, tab.id);
 	}
 });
 
@@ -43,13 +43,14 @@ function CreateContextMenu() {
 }
 
 // Function to write marked link to anti-semitic data file
-function WriteToAnti(linkUrl) {
+function WriteToAnti(linkUrl, tabId) {
 	chrome.storage.local.get('AntiSem', data => {
 		const AntiSem = data.AntiSem || [];
 		if (!AntiSem.includes(linkUrl)) {
 			AntiSem.push(linkUrl);
 			chrome.storage.local.set({ AntiSem }, () => {
 				console.log('updated domains saved:', AntiSem);
+				chrome.tabs.reload(tabId);
 			});
 		}
 	});
