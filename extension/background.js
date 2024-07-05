@@ -1,6 +1,6 @@
 chrome.runtime.onInstalled.addListener(() => {
-	// Fetch anti-semitic data
 	FetchAntiData();
+	FetchFriendlyData();
 	CreateContextMenu();
 });
 
@@ -10,6 +10,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 			sendResponse(data.AntiSem || []);
 		});
 		return true; // Keeps the message channel open for sendResponse
+	} else if (request.action === "getFriendlyDomains") {
+		chrome.storage.local.get('JewFriend', data => {
+			sendResponse(data.JewFriend || []);
+		});
+		return true;
 	}
 });
 
@@ -17,6 +22,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 chrome.contextMenus.onClicked.addListener((info, tab) => {
 	if (info.menuItemId === "WriteAnti") {
 		WriteToAnti(info.linkUrl, tab.id);
+	}
+	if (info.menuItemId === "WriteFriendly") {
+		WriteToFriendly(info.linkUrl, tab.id);
 	}
 });
 
@@ -33,11 +41,30 @@ function FetchAntiData() {
 	.catch(error => console.error('Error fetching domains:', error));
 }
 
+// Function to fetch data from the friendly data file
+function FetchFriendlyData() {
+	fetch(chrome.runtime.getURL('data/friendly.txt'))
+	.then(response => response.text())
+	.then(text => {
+		const JewFriend = text.split('\n').map(domain => domain.trim()).filter(domain => domain.trim() !== '');
+		chrome.storage.local.set({ JewFriend }, () => {
+			console.log('friendly domains saved:', JewFriend);
+		});
+	})
+	.catch(error => console.error('Error fetching friends:', error));
+}
+
 // Function to create context menu with required buttons
 function CreateContextMenu() {
 	chrome.contextMenus.create({
 		id: "WriteAnti",
 		title: "Mark as anti-semitic",
+		contexts: ["link"]
+	});
+	
+	chrome.contextMenus.create({
+		id: "WriteFriendly",
+		title: "Mark as Jewish-friendly",
 		contexts: ["link"]
 	});
 }
@@ -57,6 +84,28 @@ function WriteToAnti(linkUrl, tabId) {
 				AntiSem.push(strippedWikiLink);
 				chrome.storage.local.set({ AntiSem }, () => {
 					console.log('Added wiki link', strippedWikiLink);
+				});
+			}
+			chrome.tabs.reload(tabId);
+		}
+	});
+}
+
+// Function to write marked link to friendly data file
+function WriteToFriendly(linkUrl, tabId) {
+	chrome.storage.local.get('JewFriend', data => {
+		const JewFriend = data.JewFriend || [];
+		if (!JewFriend.includes(linkUrl)) {
+			JewFriend.push(linkUrl);
+			chrome.storage.local.set({ JewFriend }, () => {
+				console.log('updated friendlies saved:', JewFriend);
+			});
+			if (linkUrl.includes("https://en.wikipedia.org")) {
+				const fStrippedWikiLink = linkUrl.replace("https://en.wikipedia.org", '');
+				
+				JewFriend.push(fStrippedWikiLink);
+				chrome.storage.local.set({ JewFriend }, () => {
+					console.log('Added friendly wiki link:', fStrippedWikiLink);
 				});
 			}
 			chrome.tabs.reload(tabId);
