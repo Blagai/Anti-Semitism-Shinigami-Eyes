@@ -20,6 +20,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 // Context menu click handling
 chrome.contextMenus.onClicked.addListener((info, tab) => {
+	if (!info.linkUrl.includes("www.youtube.com/@") || !info.linkUrl.includes("www.youtube.com/channel/")) {
+		chrome.tabs.sendMessage(tab.id, { action: "showAlert", message: "Only mark channel links for the anti-semitism shinigami eyes extension" });
+		return;
+	}
 	if (info.menuItemId === "WriteAnti") {
 		WriteToAnti(info.linkUrl, tab.id);
 	}
@@ -86,6 +90,14 @@ function WriteToAnti(linkUrl, tabId) {
 					console.log('Added wiki link', strippedWikiLink);
 				});
 			}
+			else if (linkUrl.includes("https://www.youtube.com")) {
+				const strippedTubeLink = linkUrl.replace("https://www.youtube.com", '');
+				
+				AntiSem.push(strippedTubeLink);
+				chrome.storage.local.set({ AntiSem }, () => {
+					console.log('Added youtube link', strippedTubeLink);
+				});
+			}
 			chrome.tabs.reload(tabId);
 		}
 	});
@@ -106,6 +118,14 @@ function WriteToFriendly(linkUrl, tabId) {
 				JewFriend.push(fStrippedWikiLink);
 				chrome.storage.local.set({ JewFriend }, () => {
 					console.log('Added friendly wiki link:', fStrippedWikiLink);
+				});
+			}
+			else if (linkUrl.includes("https://www.youtube.com")) {
+				const fStrippedTubeLink = linkUrl.replace("https://www.youtube.com", '');
+				
+				JewFriend.push(fStrippedTubeLink);
+				chrome.storage.local.set({ JewFriend }, () => {
+					console.log('Added friendly youtube link:', fStrippedTubeLink);
 				});
 			}
 			chrome.tabs.reload(tabId);

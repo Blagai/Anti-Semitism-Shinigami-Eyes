@@ -59,3 +59,9 @@ chrome.runtime.sendMessage({ action: "getBlockedDomains" }, (AntiSem) => {
 		observeDomChanges(AntiSem, JewFriend);
 	});
 });
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+	if (request.action === "showAlert") {
+		alert(request.message);
+	}
+});
