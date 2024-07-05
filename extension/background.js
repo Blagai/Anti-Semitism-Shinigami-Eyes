@@ -50,8 +50,16 @@ function WriteToAnti(linkUrl, tabId) {
 			AntiSem.push(linkUrl);
 			chrome.storage.local.set({ AntiSem }, () => {
 				console.log('updated domains saved:', AntiSem);
-				chrome.tabs.reload(tabId);
 			});
+			if (linkUrl.includes("https://en.wikipedia.org")) {
+				const strippedWikiLink = linkUrl.replace("https://en.wikipedia.org", '');
+				
+				AntiSem.push(strippedWikiLink);
+				chrome.storage.local.set({ AntiSem }, () => {
+					console.log('Added wiki link', strippedWikiLink);
+				});
+			}
+			chrome.tabs.reload(tabId);
 		}
 	});
 }
