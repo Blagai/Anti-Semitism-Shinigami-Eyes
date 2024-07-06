@@ -16,5 +16,4 @@ Not all supported sites work yet, and there is no data. Data gathering will only
 * Wikipedia (works)
 
 # Known issues:
-* Selecting a specific page of a site in a search engine only marks the page and not the entire site
 * Marking a facebook group marks the user of everyone inside it the same colour if seen through a post on the group page

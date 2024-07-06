@@ -1,3 +1,35 @@
+const UserDomains = [
+	"https://www.facebook.com/",
+	"https://www.reddit.com/",
+	"https://www.twitter.com/",
+	"https://www.medium.com/",
+	"https://www.tumblr.com/",
+	"https://en.wikipedia.org/",
+	"https://www.youtube.com/"
+];
+
+const ExcludedDomains = [
+	"https://www.google.at/",
+	"https://www.google.be/",
+	"https://www.google.ca/",
+	"https://www.google.ch/",
+	"https://www.google.co.uk/",
+	"https://www.google.com/",
+	"https://www.google.de/",
+	"https://www.google.dk/",
+	"https://www.google.es/",
+	"https://www.google.fi/",
+	"https://www.google.fr/",
+	"https://www.google.is/",
+	"https://www.google.it/",
+	"https://www.google.no/",
+	"https://www.google.pt/",
+	"https://www.google.se/",
+	
+	"https://www.bing.com/",
+	"https://duckduckgo.com/"
+];
+
 chrome.runtime.onInstalled.addListener(() => {
 	FetchAntiData();
 	FetchFriendlyData();
@@ -21,7 +53,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 // Context menu click handling
 chrome.contextMenus.onClicked.addListener((info, tab) => {
 	if (info.linkUrl.includes("www.youtube.com")) {
-		if (!info.linkUrl.includes("www.youtube.com/@") || !info.linkUrl.includes("www.youtube.com/channel/")) {
+		if (!info.linkUrl.includes("www.youtube.com/@") && !info.linkUrl.includes("www.youtube.com/channel/")) {
 			chrome.tabs.sendMessage(tab.id, { action: "showAlert", message: "Only mark channel links for the anti-semitism shinigami eyes extension" });
 			return;
 		}
@@ -75,62 +107,97 @@ function CreateContextMenu() {
 	});
 }
 
+// Function to get the base domain from a URL
+function getBaseDomain(linkUrl) {
+    try {
+        const url = new URL(linkUrl);
+        return `${url.protocol}//${url.hostname}/`;
+    } catch (error) {
+        console.error('Invalid URL:', linkUrl);
+        return null;
+    }
+}
+
 // Function to write marked link to anti-semitic data file
 function WriteToAnti(linkUrl, tabId) {
+	const baseDomain = getBaseDomain(linkUrl);
 	chrome.storage.local.get('AntiSem', data => {
 		const AntiSem = data.AntiSem || [];
-		if (!AntiSem.includes(linkUrl)) {
-			AntiSem.push(linkUrl);
-			chrome.storage.local.set({ AntiSem }, () => {
-				console.log('updated domains saved:', AntiSem);
-			});
-			if (linkUrl.includes("https://en.wikipedia.org")) {
-				const strippedWikiLink = linkUrl.replace("https://en.wikipedia.org", '');
-				
-				AntiSem.push(strippedWikiLink);
+		if (!UserDomains.includes(baseDomain) && !ExcludedDomains.includes(baseDomain)) {
+			if (!AntiSem.includes(baseDomain)) {
+				AntiSem.push(baseDomain);
 				chrome.storage.local.set({ AntiSem }, () => {
-					console.log('Added wiki link', strippedWikiLink);
+					console.log('updated domains saved:', AntiSem);
 				});
 			}
-			else if (linkUrl.includes("https://www.youtube.com")) {
-				const strippedTubeLink = linkUrl.replace("https://www.youtube.com", '');
-				
-				AntiSem.push(strippedTubeLink);
-				chrome.storage.local.set({ AntiSem }, () => {
-					console.log('Added youtube link', strippedTubeLink);
-				});
-			}
-			chrome.tabs.reload(tabId);
 		}
+		else if (UserDomains.includes(baseDomain) && !ExcludedDomains.includes(baseDomain)) {
+			if (!AntiSem.includes(linkUrl)) {
+				AntiSem.push(linkUrl);
+				chrome.storage.local.set({ AntiSem }, () => {
+					console.log('updated domains saved:', AntiSem);
+				});
+				if (linkUrl.includes("https://en.wikipedia.org")) {
+					const strippedWikiLink = linkUrl.replace("https://en.wikipedia.org", '');
+			
+					AntiSem.push(strippedWikiLink);
+					chrome.storage.local.set({ AntiSem }, () => {
+						console.log('Added wiki link', strippedWikiLink);
+					});
+				}
+				else if (linkUrl.includes("https://www.youtube.com")) {
+					const strippedTubeLink = linkUrl.replace("https://www.youtube.com", '');
+			
+					AntiSem.push(strippedTubeLink);
+					chrome.storage.local.set({ AntiSem }, () => {
+						console.log('Added youtube link', strippedTubeLink);
+					});
+				}
+			}
+		}
+		chrome.tabs.reload(tabId);		
 	});
 }
 
 // Function to write marked link to friendly data file
 function WriteToFriendly(linkUrl, tabId) {
+	const FbaseDomain = getBaseDomain(linkUrl);
 	chrome.storage.local.get('JewFriend', data => {
 		const JewFriend = data.JewFriend || [];
-		if (!JewFriend.includes(linkUrl)) {
-			JewFriend.push(linkUrl);
-			chrome.storage.local.set({ JewFriend }, () => {
-				console.log('updated friendlies saved:', JewFriend);
-			});
-			if (linkUrl.includes("https://en.wikipedia.org")) {
-				const fStrippedWikiLink = linkUrl.replace("https://en.wikipedia.org", '');
-				
-				JewFriend.push(fStrippedWikiLink);
+		
+		if (!UserDomains.includes(FbaseDomain) && !ExcludedDomains.includes(FbaseDomain)) {
+			if (!JewFriend.includes(FbaseDomain)) {
+				JewFriend.push(FbaseDomain);
 				chrome.storage.local.set({ JewFriend }, () => {
-					console.log('Added friendly wiki link:', fStrippedWikiLink);
+					console.log('updated friendlies saved:', JewFriend);
 				});
 			}
-			else if (linkUrl.includes("https://www.youtube.com")) {
-				const fStrippedTubeLink = linkUrl.replace("https://www.youtube.com", '');
-				
-				JewFriend.push(fStrippedTubeLink);
-				chrome.storage.local.set({ JewFriend }, () => {
-					console.log('Added friendly youtube link:', fStrippedTubeLink);
-				});
-			}
-			chrome.tabs.reload(tabId);
 		}
+		else if (UserDomains.includes(FbaseDomain) && !ExcludedDomains.includes(FbaseDomain)) {
+			if (!JewFriend.includes(linkUrl)) {
+				JewFriend.push(linkUrl);
+				chrome.storage.local.set({ JewFriend }, () => {
+					console.log('updated friendlies saved:', JewFriend);
+				});
+				if (linkUrl.includes("https://en.wikipedia.org")) {
+					const fStrippedWikiLink = linkUrl.replace("https://en.wikipedia.org", '');
+				
+					JewFriend.push(fStrippedWikiLink);
+					chrome.storage.local.set({ JewFriend }, () => {
+						console.log('Added friendly wiki link:', fStrippedWikiLink);
+					});
+				}
+				else if (linkUrl.includes("https://www.youtube.com")) {
+					const fStrippedTubeLink = linkUrl.replace("https://www.youtube.com", '');
+				
+					JewFriend.push(fStrippedTubeLink);
+					chrome.storage.local.set({ JewFriend }, () => {
+						console.log('Added friendly youtube link:', fStrippedTubeLink);
+					});
+				}
+				chrome.tabs.reload(tabId);
+			}
+		}
+		
 	});
 }
