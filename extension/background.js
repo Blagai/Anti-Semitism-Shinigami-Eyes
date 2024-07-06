@@ -20,9 +20,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 // Context menu click handling
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-	if (!info.linkUrl.includes("www.youtube.com/@") || !info.linkUrl.includes("www.youtube.com/channel/")) {
-		chrome.tabs.sendMessage(tab.id, { action: "showAlert", message: "Only mark channel links for the anti-semitism shinigami eyes extension" });
-		return;
+	if (info.linkUrl.includes("www.youtube.com")) {
+		if (!info.linkUrl.includes("www.youtube.com/@") || !info.linkUrl.includes("www.youtube.com/channel/")) {
+			chrome.tabs.sendMessage(tab.id, { action: "showAlert", message: "Only mark channel links for the anti-semitism shinigami eyes extension" });
+			return;
+		}
 	}
 	if (info.menuItemId === "WriteAnti") {
 		WriteToAnti(info.linkUrl, tab.id);

@@ -7,10 +7,14 @@ Not all supported sites work yet, and there is no data. Data gathering will only
 # List of supported sites:
 * Google (works)
 * DuckDuckGo (works)
-* Bing (not tested)
+* Bing (works)
 * Facebook (bugged, development not finished)
 * YouTube (works)
 * Reddit (not developed)
 * Medium (not developed)
 * Tumblr (not developed)
 * Wikipedia (works)
+
+# Known issues:
+* Selecting a specific page of a site in a search engine only marks the page and not the entire site
+* Marking a facebook group marks the user of everyone inside it the same colour if seen through a post on the group page
