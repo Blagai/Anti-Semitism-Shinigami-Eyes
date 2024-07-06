@@ -5,11 +5,11 @@ An extension that highlights Anti-Semitic and Jewish-friendly subreddits/users/f
 Not all supported sites work yet, and there is no data. Data gathering will only start once I finish all the base functionalities.
 
 # List of supported sites:
-* Google (works)
-* DuckDuckGo (works)
-* Bing (works)
-* Wikipedia (works)
-* YouTube (works)
+* Google √
+* DuckDuckGo √
+* Bing √
+* Wikipedia √
+* YouTube √
 * Facebook (bugged, development not finished)
 * Reddit (not developed)
 * Medium (not developed)
