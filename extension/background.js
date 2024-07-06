@@ -58,6 +58,24 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 			return;
 		}
 	}
+	if (info.linkUrl.includes("www.reddit.com")) {
+		if (!info.linkUrl.includes("www.reddit.com/r/") && !info.linkUrl.includes("www.reddit.com/u/")) {
+			chrome.tabs.sendMessage(tab.id, { action: "showAlert", message: "Only mark subreddits or users for the anti-semitism shinigami eyes extension" });
+			return;
+		}
+		if (info.linkUrl.includes("/comments/")) {
+			chrome.tabs.sendMessage(tab.id, { action: "showAlert", message: "Only mark subreddits or users for the anti-semitism shinigami eyes extension" });
+			return;
+		}
+	}
+	if (info.linkUrl === "www.tumblr.com") {
+		chrome.tabs.sendMessage(tab.id, { action: "showAlert", message: "Please only mark users in tumblr for the anti-semitism shinigami eyes extension" });
+		return;
+	}
+	if (info.linkUrl === "www.wikipedia.com") {
+		chrome.tabs.sendMessage(tab.id, { action: "showAlert", message: "Please only mark pages in wikipedia for the anti-semitism shinigami eyes extension" });
+		return;
+	}
 	if (info.menuItemId === "WriteAnti") {
 		WriteToAnti(info.linkUrl, tab.id);
 	}
