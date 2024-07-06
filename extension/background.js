@@ -167,6 +167,22 @@ function WriteToAnti(linkUrl, tabId) {
 						console.log('Added facebook group', strippedFaceLink2);
 					});
 				}
+				else if (linkUrl.includes("https://www.reddit.com")) {
+					const strippedRedditLink = linkUrl.replace("https://www.reddit.com", '');
+					
+					AntiSem.push(strippedRedditLink);
+					chrome.storage.local.set({ AntiSem }, () => {
+						console.log('Added reddit link', strippedRedditLink);
+					});
+				}
+				else if (linkUrl.includes("https://www.tumblr.com")) {
+					const strippedTumblrLink = linkUrl.replace("https://www.tumblr.com", '');
+					
+					AntiSem.push(strippedTumblrLink);
+					chrome.storage.local.set({ AntiSem }, () => {
+						console.log('Added friendly tumblr link', strippedTumblrLink);
+					});
+				}
 			}
 		}
 		chrome.tabs.reload(tabId);		
@@ -223,9 +239,24 @@ function WriteToFriendly(linkUrl, tabId) {
 						console.log('Added friendly facebook group', FstrippedFaceLink2);
 					});
 				}
-				chrome.tabs.reload(tabId);
+				else if (linkUrl.includes("https://www.reddit.com")) {
+					const fStrippedRedditLink = linkUrl.replace("https://www.reddit.com", '');
+					
+					JewFriend.push(fStrippedRedditLink);
+					chrome.storage.local.set({ JewFriend }, () => {
+						console.log('Added friendly reddit link', fStrippedRedditLink);
+					});
+				}
+				else if (linkUrl.includes("https://www.tumblr.com")) {
+					const fStrippedTumblrLink = linkUrl.replace("https://www.tumblr.com", '');
+					
+					JewFriend.push(fStrippedTumblrLink);
+					chrome.storage.local.set({ JewFriend }, () => {
+						console.log('Added friendly tumblr link', fStrippedTumblrLink);
+					});
+				}
 			}
 		}
-		
+		chrome.tabs.reload(tabId);
 	});
 }

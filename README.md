@@ -10,11 +10,11 @@ Not all supported sites work yet, and there is no data. Data gathering will only
 * Bing ✅
 * Wikipedia ✅
 * YouTube ✅
-* Facebook (bugged)
-* Reddit (not developed yet)
-* Medium (not developed yet)
-* Tumblr (not developed yet)
+* Reddit ✅
+* Tumblr ✅
 * Twitter (not developed yet)
+* Medium (not developed yet)
+* Facebook (bugged)
 
 
 # Known issues:
