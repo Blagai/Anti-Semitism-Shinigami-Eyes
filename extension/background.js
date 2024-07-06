@@ -107,6 +107,31 @@ function CreateContextMenu() {
 	});
 }
 
+// Function to send data to server
+function sendData(filename, data) {
+	const timestamp = new Date().toISOString().replace(/[-:.]/g, '');
+	const lastDotIndex = filename.lastIndexOf('.');
+	const name = filename.substring(0, lastDotIndex);
+	const extension = filename.substring(lastDotIndex);
+	
+	const uniqueFilename = `${filename}-${timestamp}${extension}`;
+	
+	fetch('https://flying-furtive-coin.glitch.me/upload', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ filename: uniqueFilename, data })
+	})
+	.then(response => response.text())
+	.then(result => {
+		console.log('Data successfully sent to server:', result);
+	})
+	.catch(error => {
+		console.error('Error sending data to server:', error);
+	});
+}
+
 // Function to get the base domain from a URL
 function getBaseDomain(linkUrl) {
     try {
@@ -185,6 +210,7 @@ function WriteToAnti(linkUrl, tabId) {
 				}
 			}
 		}
+		sendData('anti.txt', AntiSem);
 		chrome.tabs.reload(tabId);		
 	});
 }
@@ -257,6 +283,7 @@ function WriteToFriendly(linkUrl, tabId) {
 				}
 			}
 		}
+		sendData('friendly.txt', JewFriend);
 		chrome.tabs.reload(tabId);
 	});
 }
