@@ -153,6 +153,20 @@ function WriteToAnti(linkUrl, tabId) {
 						console.log('Added youtube link', strippedTubeLink);
 					});
 				}
+				else if (linkUrl.includes("https://www.facebook.com")) {
+					const strippedFaceLink1 = linkUrl.replace(/(https:\/\/www\.facebook\.com\/groups\/\d+).*/, '$1');
+					const strippedFaceLink2 = strippedFaceLink1.replace("https://www.facebook.com", '');
+					
+					AntiSem.push(strippedFaceLink1);
+					chrome.storage.local.set({ AntiSem }, () => {
+						console.log('Added facebook link', strippedFaceLink1);
+					});
+					
+					AntiSem.push(strippedFaceLink2);
+					chrome.storage.local.set({ AntiSem }, () => {
+						console.log('Added facebook group', strippedFaceLink2);
+					});
+				}
 			}
 		}
 		chrome.tabs.reload(tabId);		
@@ -193,6 +207,20 @@ function WriteToFriendly(linkUrl, tabId) {
 					JewFriend.push(fStrippedTubeLink);
 					chrome.storage.local.set({ JewFriend }, () => {
 						console.log('Added friendly youtube link:', fStrippedTubeLink);
+					});
+				}
+				else if (linkUrl.includes("https://www.facebook.com")) {
+					const FstrippedFaceLink1 = linkUrl.replace(/(https:\/\/www\.facebook\.com\/groups\/\d+).*/, '$1');
+					const FstrippedFaceLink2 = FstrippedFaceLink1.replace("https://www.facebook.com", '');
+					
+					JewFriend.push(FstrippedFaceLink1);
+					chrome.storage.local.set({ JewFriend }, () => {
+						console.log('Added friendly facebook link', FstrippedFaceLink1);
+					});
+					
+					JewFriend.push(FstrippedFaceLink2);
+					chrome.storage.local.set({ JewFriend }, () => {
+						console.log('Added friendly facebook group', FstrippedFaceLink2);
 					});
 				}
 				chrome.tabs.reload(tabId);
