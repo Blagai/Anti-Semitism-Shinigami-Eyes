@@ -13,7 +13,6 @@
 				"*://*.reddit.com/*",
 				"*://*.twitter.com/*",
 				"*://*.medium.com/*",
-				"*://disqus.com/*",
 				"*://*.tumblr.com/*",
 				"*://*.wikipedia.org/*",
 
