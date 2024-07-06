@@ -9,6 +9,7 @@ Not all supported sites work yet, and there is no data. Data gathering will only
 * DuckDuckGo ✅
 * Bing ✅
 * Wikipedia ✅
+* YouTube ✅
 * Facebook (bugged, development not finished)
 * Reddit (not developed yet)
 * Medium (not developed yet)
