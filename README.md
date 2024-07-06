@@ -8,12 +8,13 @@ Not all supported sites work yet, and there is no data. Data gathering will only
 * Google (works)
 * DuckDuckGo (works)
 * Bing (works)
-* Facebook (bugged, development not finished)
+* Wikipedia (works)
 * YouTube (works)
+* Facebook (bugged, development not finished)
 * Reddit (not developed)
 * Medium (not developed)
 * Tumblr (not developed)
-* Wikipedia (works)
+
 
 # Known issues:
 * Marking a facebook group marks the user of everyone inside it the same colour if seen through a post on the group page
