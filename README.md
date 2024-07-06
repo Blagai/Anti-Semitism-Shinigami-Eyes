@@ -4,6 +4,8 @@ An extension that highlights Anti-Semitic and Jewish-friendly subreddits/users/f
 
 Not all supported sites work yet, and there is no data. Data gathering will only start once I finish all the base functionalities.
 
+Server version is incomplete and doesn't work unless I manually set the server to be online every few minutes. It works locally just the same as the regular version, so if you really want to use it you can.
+
 # List of supported sites:
 * Google ✅
 * DuckDuckGo ✅
@@ -15,7 +17,6 @@ Not all supported sites work yet, and there is no data. Data gathering will only
 * Twitter (not developed yet)
 * Medium (not developed yet)
 * Facebook (bugged)
-
 
 # Known issues:
 * Marking a facebook group marks the user of everyone inside it the same colour if seen through a post on the group page
