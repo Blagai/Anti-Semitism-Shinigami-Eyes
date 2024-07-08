@@ -1,7 +1,7 @@
 const UserDomains = [
 	"https://www.facebook.com/",
 	"https://www.reddit.com/",
-	"https://www.twitter.com/",
+	"https://twitter.com/",
 	"https://www.medium.com/",
 	"https://www.tumblr.com/",
 	"https://en.wikipedia.org/",
@@ -82,6 +82,9 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 			chrome.tabs.sendMessage(tab.id, { action: "showAlert", message: "Please only mark users in TikTok for the anti-semitism shinigami eyes extension" });
 			return;
 		}
+	}
+	if (info.linkUrl === "twitter.com") {
+		chrome.tabs.sendMessage(tab.id, { action: "showAlert", message: "Please only mark users in twitter for the anti-semitism shinigami eyes extension" });
 	}
 	if (info.menuItemId === "WriteAnti") {
 		WriteToAnti(info.linkUrl, tab.id);
@@ -217,9 +220,17 @@ function WriteToAnti(linkUrl, tabId) {
 						console.log('Added TikTok link', strippedTiktokLink);
 					});
 				}
+				else if (linkUrl.includes("https://twitter.com")) {
+					const strippedTwitterLink = linkUrl.replace("https://twitter.com", '');
+					
+					AntiSem.push(strippedTwitterLink);
+					chrome.storage.local.set({ AntiSem }, () => {
+						console.log('Added Twitter link', strippedTwitterLink);
+					});
+				}
 			}
 		}
-		chrome.tabs.reload(tabId);		
+		chrome.tabs.reload(tabId);	
 	});
 }
 
@@ -295,6 +306,14 @@ function WriteToFriendly(linkUrl, tabId) {
 					JewFriend.push(fStrippedTikTokLink);
 					chrome.storage.local.se({ JewFriend }, () => {
 						console.log('Added friendly TikTok link', fStrippedTikTokLink);
+					});
+				}
+				else if (linkUrl.includes("https://twitter.com")) {
+					const fStrippedTwitterLink = linkUrl.replace("https://twitter.com", '');
+					
+					JewFriend.push(fStrippedTwitterLink);
+					chrome.storage.local.set({ JewFriend }, () => {
+						console.log('Added Twitter link', fStrippedTwitterLink);
 					});
 				}
 			}
