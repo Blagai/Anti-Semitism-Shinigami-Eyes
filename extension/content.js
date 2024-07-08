@@ -8,7 +8,12 @@ function changeToRed(AntiSem) {
 		if (href) {
 			AntiSem.forEach(domain => {
 				if (href.includes(domain)) {
-					link.style.color = 'red';
+					link.style.setProperty('color', 'red', 'important');
+					
+					const twitterElements = link.querySelectorAll('.css-146c3p1, .css-1jxf684');
+					twitterElements.forEach(element => {
+						element.style.setProperty('color', 'red', 'important');
+					});
 				}
 			});
 		}
@@ -25,7 +30,12 @@ function changeToGreen(JewFriend) {
 		if (fhref) {
 			JewFriend.forEach(domain => {
 				if (fhref.includes(domain)) {
-					link.style.color = 'green';
+					link.style.setProperty('color', 'green', 'important');
+					
+					const twitterElements = link.querySelectorAll('.css-146c3p1, .css-1jxf684');
+					twitterElements.forEach(element => {
+						element.style.setProperty('color', 'green', 'important');
+					});
 				}
 			});
 		}

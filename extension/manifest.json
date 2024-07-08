@@ -14,6 +14,7 @@
 				"*://*.twitter.com/*",
 				"*://*.medium.com/*",
 				"*://*.tumblr.com/*",
+				"*://*.tiktok.com/*",
 				"*://*.wikipedia.org/*",
 
 				"*://duckduckgo.com/*",
