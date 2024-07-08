@@ -17,6 +17,9 @@ Server version is incomplete and doesn't work unless I manually set the server t
 * Twitter (not developed yet)
 * Medium (not developed yet)
 * Facebook (bugged)
+* Tiktok (partial)
 
 # Known issues:
 * Marking a facebook group marks the user of everyone inside it the same colour if seen through a post on the group page
+* User marking in TikTok is impossible because they have their own stupid UI
+* The time since upload is what's coloured in TikTok, and not the username
