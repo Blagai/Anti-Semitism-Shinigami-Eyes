@@ -15,7 +15,7 @@ Server version is incomplete and doesn't work unless I manually set the server t
 * Reddit ✅
 * Tumblr ✅
 * Twitter ✅
-* Medium (not developed yet)
+* Medium ✅
 * Facebook (bugged)
 * Tiktok (partial)
 

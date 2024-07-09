@@ -1,7 +1,6 @@
 // Function to change link colours of antisemitic sites
 function changeToRed(AntiSem) {
 	const links = document.querySelectorAll('a');
-	console.log(links);
 
 	links.forEach(link => {
 		const href = link.getAttribute('href');
@@ -14,6 +13,11 @@ function changeToRed(AntiSem) {
 					twitterElements.forEach(element => {
 						element.style.setProperty('color', 'red', 'important');
 					});
+					
+					const mediumElements = link.querySelectorAll('.am, .b');
+					mediumElements.forEach(element => {
+						element.style.setProperty('color', 'red', 'important');
+					});
 				}
 			});
 		}
@@ -23,7 +27,6 @@ function changeToRed(AntiSem) {
 //Function to change link colours of friendly sites
 function changeToGreen(JewFriend) {
 	const flinks = document.querySelectorAll('a');
-	console.log(flinks);
 	
 	flinks.forEach(link => {
 		const fhref = link.getAttribute('href');
@@ -34,6 +37,11 @@ function changeToGreen(JewFriend) {
 					
 					const twitterElements = link.querySelectorAll('.css-146c3p1, .css-1jxf684');
 					twitterElements.forEach(element => {
+						element.style.setProperty('color', 'green', 'important');
+					});
+					
+					const mediumElements = link.querySelectorAll('.am, .b');
+					mediumElements.forEach(element => {
 						element.style.setProperty('color', 'green', 'important');
 					});
 				}

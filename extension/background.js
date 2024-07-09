@@ -2,7 +2,7 @@ const UserDomains = [
 	"https://www.facebook.com/",
 	"https://www.reddit.com/",
 	"https://twitter.com/",
-	"https://www.medium.com/",
+	"https://medium.com/",
 	"https://www.tumblr.com/",
 	"https://en.wikipedia.org/",
 	"https://www.youtube.com/",
@@ -85,6 +85,12 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 	}
 	if (info.linkUrl === "twitter.com") {
 		chrome.tabs.sendMessage(tab.id, { action: "showAlert", message: "Please only mark users in twitter for the anti-semitism shinigami eyes extension" });
+	}
+	if (info.linkUrl.includes("medium.com")) {
+		if (!info.linkUrl.includes("@")) {
+			chrome.tabs.sendMessage(tab.id, { action: "showAlert", message: "Please only mark users in Medium for the anti-semitism shinigami eyes extension" });
+			return;
+		}
 	}
 	if (info.menuItemId === "WriteAnti") {
 		WriteToAnti(info.linkUrl, tab.id);
@@ -228,9 +234,23 @@ function WriteToAnti(linkUrl, tabId) {
 						console.log('Added Twitter link', strippedTwitterLink);
 					});
 				}
+				else if (linkUrl.includes("https://medium.com")) {
+					const strippedMediumLink1 = linkUrl.replace(/\?.*$/, '');
+					const strippedMediumLink2 = strippedMediumLink1.replace("https://medium.com", '');
+					
+					AntiSem.push(strippedMediumLink1);
+					chrome.storage.local.set({ AntiSem }, () => {
+						console.log('Added Medium link', strippedMediumLink1);
+					});
+					
+					AntiSem.push(strippedMediumLink2);
+					chrome.storage.local.set({ AntiSem }, () => {
+						console.log('Added Medium link', strippedMediumLink2);
+					});
+				}
 			}
 		}
-		chrome.tabs.reload(tabId);	
+		chrome.tabs.reload(tabId);
 	});
 }
 
@@ -314,6 +334,20 @@ function WriteToFriendly(linkUrl, tabId) {
 					JewFriend.push(fStrippedTwitterLink);
 					chrome.storage.local.set({ JewFriend }, () => {
 						console.log('Added Twitter link', fStrippedTwitterLink);
+					});
+				}
+				else if (linkUrl.includes("https://medium.com")) {
+					const fStrippedMediumLink1 = linkUrl.replace(/\?.*$/, '');
+					const fStrippedMediumLink2 = fStrippedMediumLink1.replace("https://medium.com", '');
+					
+					JewFriend.push(fStrippedMediumLink1);
+					chrome.storage.local.set({ JewFriend }, () => {
+						console.log('Added friendly Medium link', fStrippedMediumLink1);
+					});
+					
+					JewFriend.push(fStrippedMediumLink2);
+					chrome.storage.local.set({ JewFriend }, () => {
+						console.log('Added friendly Medium link', fStrippedMediumLink2);
 					});
 				}
 			}
