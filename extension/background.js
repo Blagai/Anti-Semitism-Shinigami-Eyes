@@ -153,6 +153,35 @@ function getBaseDomain(linkUrl) {
     }
 }
 
+// Function to check if anti marked link is in friendly
+function CheckForFriendly(linkUrl) {
+	return new Promise((resolve, reject) => {
+		const AnCheckBaseDomain = getBaseDomain(linkUrl);
+		chrome.storage.local.get('JewFriend', data => {
+			const JewFriend = data.JewFriend || [];
+		
+			if (!UserDomains.includes(AnCheckBaseDomain)) {
+				if (JewFriend.includes(AnCheckBaseDomain)) {
+					console.log('runs');
+					const BaseIndex = JewFriend.indexOf(AnCheckBaseDomain);
+					if (BaseIndex > -1) {
+						JewFriend.splice(BaseIndex, 1);
+					}
+			
+					chrome.storage.local.set({ JewFriend }, () => {
+						console.log('removed friendly domain', AnCheckBaseDomain);
+						resolve();
+					});
+				}
+				else {
+					resolve();
+				}
+			}
+			// code for if it's a user-based site
+		});
+	});
+}
+
 // Function to write marked link to anti-semitic data file
 function WriteToAnti(linkUrl, tabId) {
 	const baseDomain = getBaseDomain(linkUrl);
@@ -160,9 +189,11 @@ function WriteToAnti(linkUrl, tabId) {
 		const AntiSem = data.AntiSem || [];
 		if (!UserDomains.includes(baseDomain) && !ExcludedDomains.includes(baseDomain)) {
 			if (!AntiSem.includes(baseDomain)) {
-				AntiSem.push(baseDomain);
-				chrome.storage.local.set({ AntiSem }, () => {
-					console.log('updated domains saved:', AntiSem);
+				CheckForFriendly(linkUrl).then(() => {
+					AntiSem.push(baseDomain);
+					chrome.storage.local.set({ AntiSem }, () => {
+						console.log('updated domains saved:', AntiSem);
+					});
 				});
 			}
 		}
