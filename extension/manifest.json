@@ -1,7 +1,7 @@
 {
 	"name": "Shinigami Eyes Anti-Semitism Version",
 	"author": "Blagai",
-	"version": "0.0.1",
+	"version": "0.1.1",
 	"permissions": ["activeTab", "contextMenus", "storage", "scripting"],
 	"manifest_version": 3,
 	"description": "highlights Anti-Semitic and Jewish-friendly subreddits/users/facebook pages/groups with different colors.",
