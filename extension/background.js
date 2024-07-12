@@ -209,6 +209,7 @@ function CheckForFriendly(linkUrl) {
 			
 					chrome.storage.local.set({ JewFriend }, () => {
 						console.log('removed friendly domain', AnCheckBaseDomain);
+						sendData('friendly.txt', JewFriend);
 						resolve();
 					});
 				}
@@ -222,7 +223,6 @@ function CheckForFriendly(linkUrl) {
 					if (LinkIndex > -1) {
 						JewFriend.splice(LinkIndex, 1);
 					}
-					
 					if (linkUrl.includes("https://en.wikipedia.org")) {
 						const AnCheckStrippedWikiLink = linkUrl.replace("https://en.wikipedia.org", '');
 						const WikiIndex = JewFriend.indexOf(AnCheckStrippedWikiLink);
@@ -296,7 +296,7 @@ function CheckForFriendly(linkUrl) {
 					chrome.storage.local.set({ JewFriend }, () => {
 						console.log('removed shit');
 					});
-					
+					sendData('friendly.txt', JewFriend);
 					resolve();
 				}
 				else {
@@ -429,6 +429,7 @@ function CheckForAnti(linkUrl) {
 			
 					chrome.storage.local.set({ AntiSem }, () => {
 						console.log('removed anti domain', FAnCheckBaseDomain);
+						sendData('anti.txt', AntiSem);
 						resolve();
 					});
 				}
@@ -516,7 +517,7 @@ function CheckForAnti(linkUrl) {
 					chrome.storage.local.set({ AntiSem }, () => {
 						console.log('removed anti shit');
 					});
-					
+					sendData('anti.txt', AntiSem);
 					resolve();
 				}
 				else {
