@@ -98,6 +98,15 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 	if (info.menuItemId === "WriteFriendly") {
 		WriteToFriendly(info.linkUrl, tab.id);
 	}
+	if (info.menuItemId === "Clear") {
+		CheckForFriendly(info.linkUrl).then(() => {
+			console.log("cleared link from friendly");
+		});
+		CheckForAnti(info.linkUrl).then(() => {
+			console.log("cleared link from anti");
+		});
+		chrome.tabs.reload(tab.id);
+	}
 	
 });
 
@@ -138,6 +147,12 @@ function CreateContextMenu() {
 	chrome.contextMenus.create({
 		id: "WriteFriendly",
 		title: "Mark as Jewish-friendly",
+		contexts: ["link"]
+	});
+	
+	chrome.contextMenus.create({
+		id: "Clear",
+		title: "Clear marking",
 		contexts: ["link"]
 	});
 }
