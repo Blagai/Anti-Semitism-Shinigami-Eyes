@@ -60,7 +60,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 		}
 	}
 	if (info.linkUrl.includes("www.reddit.com")) {
-		if (!info.linkUrl.includes("www.reddit.com/r/") && !info.linkUrl.includes("www.reddit.com/u/")) {
+		if (!info.linkUrl.includes("www.reddit.com/r/") && !info.linkUrl.includes("www.reddit.com/u/") && !info.linkUrl.includes("www.reddit.com/user/")) {
 			chrome.tabs.sendMessage(tab.id, { action: "showAlert", message: "Only mark subreddits or users for the anti-semitism shinigami eyes extension" });
 			return;
 		}
