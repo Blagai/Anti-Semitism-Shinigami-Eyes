@@ -6,7 +6,8 @@ const UserDomains = [
 	"https://www.tumblr.com/",
 	"https://en.wikipedia.org/",
 	"https://www.youtube.com/",
-	"https://www.tiktok.com/"
+	"https://www.tiktok.com/",
+	"https://x.com/"
 ];
 
 const ExcludedDomains = [
@@ -83,7 +84,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 			return;
 		}
 	}
-	if (info.linkUrl === "twitter.com") {
+	if (info.linkUrl === "https://twitter.com/" || info.linkUrl === "https://x.com/") {
 		chrome.tabs.sendMessage(tab.id, { action: "showAlert", message: "Please only mark users in twitter for the anti-semitism shinigami eyes extension" });
 	}
 	if (info.linkUrl.includes("medium.com")) {
@@ -240,6 +241,13 @@ function CheckForFriendly(linkUrl) {
 							JewFriend.splice(TwitterIndex, 1);
 						}
 					}
+					else if (linkUrl.includes("https://x.com")) {
+						const AnCheckStrippedXLink = linkUrl.replace("https://www.x.com", '');
+						const XIndex = JewFriend.indexOf(AnCheckStrippedXLink);
+						if (XIndex > -1) {
+							JewFriend.splice(XIndex, 1);
+						}
+					}
 					else if (linkUrl.includes("https://www.facebook.com")) {
 						const AnCheckStrippedFaceLink1 = linkUrl.replace(/(https:\/\/www\.facebook\.com\/groups\/\d+).*/, '$1');
 						const AnCheckStrippedFaceLink2 = AnCheckStrippedFaceLink1.replace("https://www.facebook.com", '');
@@ -366,6 +374,15 @@ function WriteToAnti(linkUrl, tabId) {
 							console.log('Added Twitter link', strippedTwitterLink);
 						});
 					}
+					else if (linkUrl.includes("https://x.com")) {
+						const strippedXLink = linkUrl.replace("https://x.com", '');
+						
+						AntiSem.push(strippedXLink);
+						chrome.storage.local.set({ AntiSem }, () => {
+							sendData('anti.txt', AntiSem);
+							console.log('Added "x" link (Elon Musk I hate you)', strippedXLink);
+						});
+					}
 					else if (linkUrl.includes("https://medium.com")) {
 						const strippedMediumLink1 = linkUrl.replace(/\?.*$/, '');
 						const strippedMediumLink2 = strippedMediumLink1.replace("https://medium.com", '');
@@ -457,6 +474,13 @@ function CheckForAnti(linkUrl) {
 						const FTwitterIndex = AntiSem.indexOf(FAnCheckStrippedTwitterLink);
 						if (FTwitterIndex > -1) {
 							AntiSem.splice(FTwitterIndex, 1);
+						}
+					}
+					else if (linkUrl.includes("https://x.com")) {
+						const FAnCheckStrippedXLink = linkUrl.replace("https://www.x.com", '');
+						const FXIndex = AntiSem.indexOf(FAnCheckStrippedXLink);
+						if (FXIndex > -1) {
+							AntiSem.splice(FXIndex, 1);
 						}
 					}
 					else if (linkUrl.includes("https://www.facebook.com")) {
@@ -584,6 +608,15 @@ function WriteToFriendly(linkUrl, tabId) {
 						JewFriend.push(fStrippedTwitterLink);
 						chrome.storage.local.set({ JewFriend }, () => {
 							console.log('Added Twitter link', fStrippedTwitterLink);
+						});
+					}
+					else if (linkUrl.includes("https://x.com")) {
+						const fStrippedXLink = linkUrl.replace("https://x.com", '');
+						
+						JewFriend.push(fStrippedXLink);
+						chrome.storage.local.set({ JewFriend }, () => {
+							sendData('friendly.txt', JewFriend);
+							console.log('Added X link', fStrippedXLink);
 						});
 					}
 					else if (linkUrl.includes("https://medium.com")) {
