@@ -12,6 +12,7 @@
 				"*://*.youtube.com/*",
 				"*://*.reddit.com/*",
 				"*://*.twitter.com/*",
+				"*://*.x.com/*",
 				"*://*.medium.com/*",
 				"*://*.tumblr.com/*",
 				"*://*.tiktok.com/*",
