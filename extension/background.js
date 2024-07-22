@@ -379,7 +379,6 @@ function WriteToAnti(linkUrl, tabId) {
 						
 						AntiSem.push(strippedXLink);
 						chrome.storage.local.set({ AntiSem }, () => {
-							sendData('anti.txt', AntiSem);
 							console.log('Added "x" link (Elon Musk I hate you)', strippedXLink);
 						});
 					}
@@ -615,7 +614,6 @@ function WriteToFriendly(linkUrl, tabId) {
 						
 						JewFriend.push(fStrippedXLink);
 						chrome.storage.local.set({ JewFriend }, () => {
-							sendData('friendly.txt', JewFriend);
 							console.log('Added X link', fStrippedXLink);
 						});
 					}
