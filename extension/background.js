@@ -368,7 +368,12 @@ function WriteToAnti(linkUrl, tabId) {
 					}
 					else if (linkUrl.includes("https://twitter.com")) {
 						const strippedTwitterLink = linkUrl.replace("https://twitter.com", '');
+						const TwitterToXLink = linkUrl.replace("twitter", 'x');
 					
+						AntiSem.push(TwitterToXLink);
+						chrome.storage.local.set({ AntiSem }, () => {
+							console.log('Added TwitterToX link', TwitterToXLink);
+						});
 						AntiSem.push(strippedTwitterLink);
 						chrome.storage.local.set({ AntiSem }, () => {
 							console.log('Added Twitter link', strippedTwitterLink);
@@ -376,6 +381,7 @@ function WriteToAnti(linkUrl, tabId) {
 					}
 					else if (linkUrl.includes("https://x.com")) {
 						const strippedXLink = linkUrl.replace("https://x.com", '');
+						// changing x to twitter is more complicated because I need to only replace the first instance of X so I will do that tomorrow when it's not 12 AM
 						
 						AntiSem.push(strippedXLink);
 						chrome.storage.local.set({ AntiSem }, () => {
