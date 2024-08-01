@@ -608,18 +608,28 @@ function WriteToFriendly(linkUrl, tabId) {
 					}
 					else if (linkUrl.includes("https://twitter.com")) {
 						const fStrippedTwitterLink = linkUrl.replace("https://twitter.com", '');
-					
+						const fTwitterToXLink = linkUrl.replace("https://twitter.com", 'https://x.com');
+						
+						JewFriend.push(fTwitterToXLink);
+						chrome.storage.local.set({ JewFriend }, () => {
+							console.log('Added friendly TwitterToX link', fTwitterToXLink);
+						});
 						JewFriend.push(fStrippedTwitterLink);
 						chrome.storage.local.set({ JewFriend }, () => {
-							console.log('Added Twitter link', fStrippedTwitterLink);
+							console.log('Added friendly Twitter link', fStrippedTwitterLink);
 						});
 					}
 					else if (linkUrl.includes("https://x.com")) {
 						const fStrippedXLink = linkUrl.replace("https://x.com", '');
+						const fXToTwitterLink = linkurl.replace("https://x.com", 'https://twitter.com');
 						
+						Jewfriend.push(fXToTwitterLink);
+						chrome.storage.local.set({ JewFriend }, () => {
+							console.log('Added friendly XToTwitter link', fXToTwitterLink)
+						});
 						JewFriend.push(fStrippedXLink);
 						chrome.storage.local.set({ JewFriend }, () => {
-							console.log('Added X link', fStrippedXLink);
+							console.log('Added friendly X link', fStrippedXLink);
 						});
 					}
 					else if (linkUrl.includes("https://medium.com")) {
