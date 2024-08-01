@@ -1,0 +1,55 @@
+{
+	"name": "Shinigami Eyes Anti-Semitism Version",
+	"author": "Blagai",
+	"version": "0.1.1",
+	"permissions": ["activeTab", "contextMenus", "storage", "scripting"],
+	"manifest_version": 3,
+	"description": "highlights Anti-Semitic and Jewish-friendly subreddits/users/facebook pages/groups with different colours.",
+	"content_scripts": [
+		{
+			"matches": [
+				"*://*.facebook.com/*",
+				"*://*.youtube.com/*",
+				"*://*.reddit.com/*",
+				"*://*.twitter.com/*",
+				"*://*.x.com/*",
+				"*://*.medium.com/*",
+				"*://*.tumblr.com/*",
+				"*://*.tiktok.com/*",
+				"*://*.wikipedia.org/*",
+
+				"*://duckduckgo.com/*",
+				"*://*.bing.com/*",
+
+				"*://*.google.ar/*",
+				"*://*.google.at/*",
+				"*://*.google.be/*",
+				"*://*.google.ca/*",
+				"*://*.google.ch/*",
+				"*://*.google.co.uk/*",
+				"*://*.google.com/*",
+				"*://*.google.de/*",
+				"*://*.google.dk/*",
+				"*://*.google.es/*",
+				"*://*.google.fi/*",
+				"*://*.google.fr/*",
+				"*://*.google.is/*",
+				"*://*.google.it/*",
+				"*://*.google.no/*",
+				"*://*.google.pt/*",
+				"*://*.google.se/*"
+			],
+			"js": [
+				"content.js"
+			]
+		}
+	],
+	"background": {
+		"scripts": ["background.js"]
+	},
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "{399b0b5d-502b-4458-81cb-4a1f3b882540}"
+		}
+	}
+}
