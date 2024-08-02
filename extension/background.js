@@ -685,9 +685,9 @@ function WriteToFriendly(linkUrl, tabId) {
 					}
 					else if (linkUrl.includes("https://x.com")) {
 						const fStrippedXLink = linkUrl.replace("https://x.com", '');
-						const fXToTwitterLink = linkurl.replace("https://x.com", 'https://twitter.com');
+						const fXToTwitterLink = linkUrl.replace("https://x.com", 'https://twitter.com');
 						
-						Jewfriend.push(fXToTwitterLink);
+						JewFriend.push(fXToTwitterLink);
 						chrome.storage.local.set({ JewFriend }, () => {
 							console.log('Added friendly XToTwitter link', fXToTwitterLink)
 						});
