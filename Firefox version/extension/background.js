@@ -153,6 +153,7 @@ function getBaseDomain(linkUrl) {
 		const params = new URLSearchParams(url.search);
 		if (params.has('url')) {
 			const nestedUrl = new URL(params.get('url'));
+			console.log(`${nestedUrl.protocol}//${nestedUrl.hostname}/`);
 			return `${nestedUrl.protocol}//${nestedUrl.hostname}/`;
 		}
         return `${url.protocol}//${url.hostname}/`;
@@ -286,6 +287,7 @@ function CheckForFriendly(linkUrl) {
 // Function to write marked link to anti-semitic data file
 function WriteToAnti(linkUrl, tabId) {
 	const baseDomain = getBaseDomain(linkUrl);
+	console.log("glob is", baseDomain);
 	chrome.storage.local.get('AntiSem', data => {
 		const AntiSem = data.AntiSem || [];
 		if (!UserDomains.includes(baseDomain) && !ExcludedDomains.includes(baseDomain)) {
@@ -679,9 +681,9 @@ function WriteToFriendly(linkUrl, tabId) {
 					}
 					else if (linkUrl.includes("https://x.com")) {
 						const fStrippedXLink = linkUrl.replace("https://x.com", '');
-						const fXToTwitterLink = linkurl.replace("https://x.com", 'https://twitter.com');
+						const fXToTwitterLink = linkUrl.replace("https://x.com", 'https://twitter.com');
 						
-						Jewfriend.push(fXToTwitterLink);
+						JewFriend.push(fXToTwitterLink);
 						chrome.storage.local.set({ JewFriend }, () => {
 							console.log('Added friendly XToTwitter link', fXToTwitterLink)
 						});
