@@ -344,6 +344,35 @@ function WriteToAnti(linkUrl, tabId) {
 					}
 					else if (linkUrl.includes("https://www.reddit.com")) {
 						const strippedRedditLink = linkUrl.replace("https://www.reddit.com", '');
+						
+						if (linkUrl.includes("reddit.com/user/")) {
+							const UserToU = linkUrl.replace("reddit.com/user", 'reddit.com/u');
+							const StrippedUserToU = UserToU.replace("https://www.reddit.com", '');
+							
+							AntiSem.push(UserToU);
+							chrome.storage.local.set({ AntiSem }, () => {
+								console.log('Added  reddit link', UserToU);
+							});
+							
+							AntiSem.push(StrippedUserToU);
+							chrome.storage.local.set({ AntiSem }, () => {
+								console.log('Added  reddit link', StrippedUserToU);
+							});
+						}
+						if (linkUrl.includes("reddit.com/u/")) {
+							const UToUser = linkUrl.replace("reddit.com/u", 'reddit.com/user');
+							const StrippedUToUser = UToUser.replace("https://www.reddit.com", '');
+							
+							AntiSem.push(UToUser);
+							chrome.storage.local.set({ AntiSem }, () => {
+								console.log('Added reddit link', UToUser);
+							});
+							
+							AntiSem.push(StrippedUToUser);
+							chrome.storage.local.set({ AntiSem }, () => {
+								console.log('Added  reddit link', StrippedUToUser);
+							});
+						}
 					
 						AntiSem.push(strippedRedditLink);
 						chrome.storage.local.set({ AntiSem }, () => {
@@ -590,11 +619,41 @@ function WriteToFriendly(linkUrl, tabId) {
 					}
 					else if (linkUrl.includes("https://www.reddit.com")) {
 						const fStrippedRedditLink = linkUrl.replace("https://www.reddit.com", '');
+						if (linkUrl.includes("reddit.com/user/")) {
+							const fUserToU = linkUrl.replace("reddit.com/user", 'reddit.com/u');
+							const fStrippedUserToU = fUserToU.replace("https://www.reddit.com", '');
+							
+							JewFriend.push(fUserToU);
+							chrome.storage.local.set({ JewFriend }, () => {
+								console.log('Added friendly reddit link', fUserToU);
+							});
+							
+							JewFriend.push(fStrippedUserToU);
+							chrome.storage.local.set({ JewFriend }, () => {
+								console.log('Added friendly reddit link', fStrippedUserToU);
+							});
+						}
+						if (linkUrl.includes("reddit.com/u/")) {
+							const fUToUser = linkUrl.replace("reddit.com/u", 'reddit.com/user');
+							const fStrippedUToUser = fUToUser.replace("https://www.reddit.com", '');
+							
+							JewFriend.push(fUToUser);
+							chrome.storage.local.set({ JewFriend }, () => {
+								console.log('Added friendly reddit link', fUToUser);
+							});
+							
+							JewFriend.push(fStrippedUToUser);
+							chrome.storage.local.set({ JewFriend }, () => {
+								console.log('Added friendly reddit link', fStrippedUToUser);
+							});
+						}
 					
 						JewFriend.push(fStrippedRedditLink);
 						chrome.storage.local.set({ JewFriend }, () => {
 							console.log('Added friendly reddit link', fStrippedRedditLink);
 						});
+						
+						
 					}
 					else if (linkUrl.includes("https://www.tumblr.com")) {
 						const fStrippedTumblrLink = linkUrl.replace("https://www.tumblr.com", '');
