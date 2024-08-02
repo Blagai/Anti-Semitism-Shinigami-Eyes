@@ -670,7 +670,7 @@ function WriteToFriendly(linkUrl, tabId) {
 						});
 						JewFriend.push(fStrippedTwitterLink);
 						chrome.storage.local.set({ JewFriend }, () => {
-							sendData('friendly.txt', JewFriend);=======
+							sendData('friendly.txt', JewFriend);
 							console.log('Added friendly Twitter link', fStrippedTwitterLink);
 						});
 					}
