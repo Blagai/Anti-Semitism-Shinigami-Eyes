@@ -96,7 +96,6 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 		});
 		chrome.tabs.reload(tab.id);
 	}
-	
 });
 
 // Function to fetch data from the anti-semitic data file
