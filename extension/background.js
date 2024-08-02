@@ -385,7 +385,7 @@ function WriteToAnti(linkUrl, tabId) {
 						
 						AntiSem.push(XToTwitterLink);
 						chrome.storage.local.set({ AntiSem }, () => {
-							console.log('Added XToTwitter link', XToTwitter);
+							console.log('Added XToTwitter link', XToTwitterLink);
 						});
 						
 						AntiSem.push(strippedXLink);
