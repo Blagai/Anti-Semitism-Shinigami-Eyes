@@ -19,6 +19,12 @@ Server version is incomplete and doesn't work unless I manually set the server t
 * Facebook (bugged)
 * Tiktok (partial)
 
+# List of supported browsers:
+* Brave (tested)
+* Chrome (needs to be tested)
+* Firefox (in work)
+* Any Chromium browser (theoretical)
+
 # Known issues:
 * Marking a facebook group marks the user of everyone inside it the same colour if seen through a post on the group page
 * User marking in TikTok is impossible because they have their own stupid UI
