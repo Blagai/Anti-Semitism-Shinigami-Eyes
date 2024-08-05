@@ -158,27 +158,37 @@ function CreateContextMenu() {
 }
 
 // Function to send data to server
-function sendData(filename, data) {
+function sendData(baseDomain, marking) {
 	const timestamp = new Date().toISOString().replace(/[-:.]/g, '');
-	const lastDotIndex = filename.lastIndexOf('.');
-	const name = filename.substring(0, lastDotIndex);
-	const extension = filename.substring(lastDotIndex);
+	const date = new Date().toISOString();
 	
-	const uniqueFilename = `${filename}-${timestamp}${extension}`;
+	const addition = baseDomain
+	const uniqueFilename = `NewData_${timestamp}.csv`;
 	
-	fetch('https://flying-furtive-coin.glitch.me/upload', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({ filename: uniqueFilename, data })
-	})
-	.then(response => response.text())
-	.then(result => {
-		console.log('Data successfully sent to server:', result);
+	fetch('https://flying-furtive-coin.glitch.me/get-username-ip')
+	.then(response => response.json())
+	.then(({ username, ip }) => {
+		const originIP = ip || 'Unknown IP';
+		const uniqueIdentifier = username || originIP || timestamp;
+		const row = `${addition},${date},${originIP},${marking}`;
+		
+		fetch('https://flying-furtive-coin.glitch.me/upload', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ filename: uniqueFilename, data: row })
+		})
+		.then(response => response.text())
+		.then(result => {
+			console.log('Data succesfully sent to server:', result);
+		})
+		.catch(error => {
+			console.error('Error sending data to server:', error);
+		});
 	})
 	.catch(error => {
-		console.error('Error sending data to server:', error);
+		console.error('Error fetching user info:', error);
 	});
 }
 
@@ -324,7 +334,7 @@ function WriteToAnti(linkUrl, tabId) {
 				CheckForFriendly(linkUrl).then(() => {
 					AntiSem.push(baseDomain);
 					chrome.storage.local.set({ AntiSem }, () => {
-						sendData('anti.txt', AntiSem);
+						sendData(baseDomain, 'Anti');
 						console.log('updated domains saved:', AntiSem);
 					});
 				});
