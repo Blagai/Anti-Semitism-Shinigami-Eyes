@@ -158,11 +158,16 @@ function CreateContextMenu() {
 }
 
 // Function to send data to server
-function sendData(baseDomain, marking) {
+function sendData(lank, blag, marking, action) {
 	const timestamp = new Date().toISOString().replace(/[-:.]/g, '');
 	const date = new Date().toISOString();
-	
-	const addition = baseDomain
+	var addition = '';
+	if (blag != '') {
+		addition = blag;
+	}
+	else {
+		addition = lank;
+	}
 	const uniqueFilename = `NewData_${timestamp}.csv`;
 	
 	fetch('https://flying-furtive-coin.glitch.me/get-username-ip')
@@ -170,7 +175,7 @@ function sendData(baseDomain, marking) {
 	.then(({ username, ip }) => {
 		const originIP = ip || 'Unknown IP';
 		const uniqueIdentifier = username || originIP || timestamp;
-		const row = `${addition},${date},${originIP},${marking}`;
+		const row = `${addition},${date},${originIP},${marking},${action}`;
 		
 		fetch('https://flying-furtive-coin.glitch.me/upload', {
 			method: 'POST',
@@ -219,7 +224,7 @@ function CheckForFriendly(linkUrl) {
 			
 					chrome.storage.local.set({ JewFriend }, () => {
 						console.log('removed friendly domain', AnCheckBaseDomain);
-						sendData('friendly.txt', JewFriend);
+						sendData('', AnCheckBaseDomain, 'Friendly', 'Remove');
 						resolve();
 					});
 				}
@@ -313,7 +318,7 @@ function CheckForFriendly(linkUrl) {
 					chrome.storage.local.set({ JewFriend }, () => {
 						console.log('removed shit');
 					});
-					sendData('friendly.txt', JewFriend);
+					sendData(linkUrl, '', 'Friendly', 'Remove');
 					resolve();
 				}
 				else {
@@ -334,7 +339,7 @@ function WriteToAnti(linkUrl, tabId) {
 				CheckForFriendly(linkUrl).then(() => {
 					AntiSem.push(baseDomain);
 					chrome.storage.local.set({ AntiSem }, () => {
-						sendData(baseDomain, 'Anti');
+						sendData('', baseDomain, 'Anti', 'Add');
 						console.log('updated domains saved:', AntiSem);
 					});
 				});
@@ -345,7 +350,7 @@ function WriteToAnti(linkUrl, tabId) {
 				CheckForFriendly(linkUrl).then(() => {
 					AntiSem.push(linkUrl);
 					chrome.storage.local.set({ AntiSem }, () => {
-						sendData('anti.txt', AntiSem);
+						sendData(linkUrl, '', 'Anti', 'Add');
 						console.log('updated domains saved:', AntiSem);
 					});
 					if (linkUrl.includes("https://en.wikipedia.org")) {
@@ -353,7 +358,6 @@ function WriteToAnti(linkUrl, tabId) {
 			
 						AntiSem.push(strippedWikiLink);
 						chrome.storage.local.set({ AntiSem }, () => {
-							sendData('anti.txt', AntiSem);
 							console.log('Added wiki link', strippedWikiLink);
 						});
 					}
@@ -362,7 +366,6 @@ function WriteToAnti(linkUrl, tabId) {
 			
 						AntiSem.push(strippedTubeLink);
 						chrome.storage.local.set({ AntiSem }, () => {
-							sendData('anti.txt', AntiSem);
 							console.log('Added youtube link', strippedTubeLink);
 						});
 					}
@@ -372,13 +375,11 @@ function WriteToAnti(linkUrl, tabId) {
 					
 						AntiSem.push(strippedFaceLink1);
 						chrome.storage.local.set({ AntiSem }, () => {
-							sendData('anti.txt', AntiSem);
 							console.log('Added facebook link', strippedFaceLink1);
 						});
 					
 						AntiSem.push(strippedFaceLink2);
 						chrome.storage.local.set({ AntiSem }, () => {
-							sendData('anti.txt', AntiSem);
 							console.log('Added facebook group', strippedFaceLink2);
 						});
 					}
@@ -416,7 +417,6 @@ function WriteToAnti(linkUrl, tabId) {
 					
 						AntiSem.push(strippedRedditLink);
 						chrome.storage.local.set({ AntiSem }, () => {
-							sendData('anti.txt', AntiSem);
 							console.log('Added reddit link', strippedRedditLink);
 						});
 					}
@@ -425,7 +425,6 @@ function WriteToAnti(linkUrl, tabId) {
 					
 						AntiSem.push(strippedTumblrLink);
 						chrome.storage.local.set({ AntiSem }, () => {
-							sendData('anti.txt', AntiSem);
 							console.log('Added tumblr link', strippedTumblrLink);
 						});
 					}
@@ -434,7 +433,6 @@ function WriteToAnti(linkUrl, tabId) {
 					
 						AntiSem.push(strippedTiktokLink);
 						chrome.storage.local.set({ AntiSem }, () => {
-							sendData('anti.txt', AntiSem);
 							console.log('Added TikTok link', strippedTiktokLink);
 						});
 					}
@@ -448,7 +446,6 @@ function WriteToAnti(linkUrl, tabId) {
 						});
 						AntiSem.push(strippedTwitterLink);
 						chrome.storage.local.set({ AntiSem }, () => {
-							sendData('anti.txt', AntiSem);
 							console.log('Added Twitter link', strippedTwitterLink);
 						});
 					}
@@ -463,7 +460,6 @@ function WriteToAnti(linkUrl, tabId) {
 						
 						AntiSem.push(strippedXLink);
 						chrome.storage.local.set({ AntiSem }, () => {
-							sendData('anti.txt', AntiSem);
 							console.log('Added "x" link (Elon Musk I hate you)', strippedXLink);
 						});
 					}
@@ -473,13 +469,11 @@ function WriteToAnti(linkUrl, tabId) {
 					
 						AntiSem.push(strippedMediumLink1);
 						chrome.storage.local.set({ AntiSem }, () => {
-							sendData('anti.txt', AntiSem);
 							console.log('Added Medium link', strippedMediumLink1);
 						});
 					
 						AntiSem.push(strippedMediumLink2);
 						chrome.storage.local.set({ AntiSem }, () => {
-							sendData('anti.txt', AntiSem);
 							console.log('Added Medium link', strippedMediumLink2);
 						});
 					}
@@ -506,7 +500,7 @@ function CheckForAnti(linkUrl) {
 			
 					chrome.storage.local.set({ AntiSem }, () => {
 						console.log('removed anti domain', FAnCheckBaseDomain);
-						sendData('anti.txt', AntiSem);
+						sendData('', FAnCheckBaseDomain, 'Anti', 'Remove');
 						resolve();
 					});
 				}
@@ -601,7 +595,7 @@ function CheckForAnti(linkUrl) {
 					chrome.storage.local.set({ AntiSem }, () => {
 						console.log('removed anti shit');
 					});
-					sendData('anti.txt', AntiSem);
+					sendData(linkUrl, '', 'Anti', 'Remove');
 					resolve();
 				}
 				else {
@@ -623,7 +617,7 @@ function WriteToFriendly(linkUrl, tabId) {
 				CheckForAnti(linkUrl).then(() => {
 					JewFriend.push(FbaseDomain);
 					chrome.storage.local.set({ JewFriend }, () => {
-						sendData('friendly.txt', JewFriend);
+						sendData('', FbaseDomain, 'Friendly', 'Add');
 						console.log('updated friendlies saved:', JewFriend);
 					});
 				});
@@ -634,7 +628,7 @@ function WriteToFriendly(linkUrl, tabId) {
 				CheckForAnti(linkUrl).then(() => {
 					JewFriend.push(linkUrl);
 					chrome.storage.local.set({ JewFriend }, () => {
-						sendData('friendly.txt', JewFriend);
+						sendData(linkUrl, '', 'Friendly', 'Add');
 						console.log('updated friendlies saved:', JewFriend);
 					});
 					if (linkUrl.includes("https://en.wikipedia.org")) {
@@ -642,7 +636,6 @@ function WriteToFriendly(linkUrl, tabId) {
 				
 						JewFriend.push(fStrippedWikiLink);
 						chrome.storage.local.set({ JewFriend }, () => {
-							sendData('friendly.txt', JewFriend);
 							console.log('Added friendly wiki link:', fStrippedWikiLink);
 						});
 					}
@@ -651,7 +644,6 @@ function WriteToFriendly(linkUrl, tabId) {
 				
 						JewFriend.push(fStrippedTubeLink);
 						chrome.storage.local.set({ JewFriend }, () => {
-							sendData('friendly.txt', JewFriend);
 							console.log('Added friendly youtube link:', fStrippedTubeLink);
 						});
 					}
@@ -661,13 +653,11 @@ function WriteToFriendly(linkUrl, tabId) {
 					
 						JewFriend.push(FstrippedFaceLink1);
 						chrome.storage.local.set({ JewFriend }, () => {
-							sendData('friendly.txt', JewFriend);
 							console.log('Added friendly facebook link', FstrippedFaceLink1);
 						});
 					
 						JewFriend.push(FstrippedFaceLink2);
 						chrome.storage.local.set({ JewFriend }, () => {
-							sendData('friendly.txt', JewFriend);
 							console.log('Added friendly facebook group', FstrippedFaceLink2);
 						});
 					}
@@ -704,7 +694,6 @@ function WriteToFriendly(linkUrl, tabId) {
 					
 						JewFriend.push(fStrippedRedditLink);
 						chrome.storage.local.set({ JewFriend }, () => {
-							sendData('friendly.txt', JewFriend);
 							console.log('Added friendly reddit link', fStrippedRedditLink);
 						});
 						
@@ -715,7 +704,6 @@ function WriteToFriendly(linkUrl, tabId) {
 					
 						JewFriend.push(fStrippedTumblrLink);
 						chrome.storage.local.set({ JewFriend }, () => {
-							sendData('friendly.txt', JewFriend);
 							console.log('Added friendly tumblr link', fStrippedTumblrLink);
 						});
 					}
@@ -724,7 +712,6 @@ function WriteToFriendly(linkUrl, tabId) {
 					
 						JewFriend.push(fStrippedTikTokLink);
 						chrome.storage.local.se({ JewFriend }, () => {
-							sendData('friendly.txt', JewFriend);
 							console.log('Added friendly TikTok link', fStrippedTikTokLink);
 						});
 					}
@@ -738,7 +725,6 @@ function WriteToFriendly(linkUrl, tabId) {
 						});
 						JewFriend.push(fStrippedTwitterLink);
 						chrome.storage.local.set({ JewFriend }, () => {
-							sendData('friendly.txt', JewFriend);
 							console.log('Added friendly Twitter link', fStrippedTwitterLink);
 						});
 					}
@@ -752,7 +738,6 @@ function WriteToFriendly(linkUrl, tabId) {
 						});
 						JewFriend.push(fStrippedXLink);
 						chrome.storage.local.set({ JewFriend }, () => {
-							sendData('friendly.txt', JewFriend);
 							console.log('Added friendly X link', fStrippedXLink);
 						});
 					}
@@ -762,13 +747,11 @@ function WriteToFriendly(linkUrl, tabId) {
 					
 						JewFriend.push(fStrippedMediumLink1);
 						chrome.storage.local.set({ JewFriend }, () => {
-							sendData('friendly.txt', JewFriend);
 							console.log('Added friendly Medium link', fStrippedMediumLink1);
 						});
 					
 						JewFriend.push(fStrippedMediumLink2);
 						chrome.storage.local.set({ JewFriend }, () => {
-							sendData('friendly.txt', JewFriend);
 							console.log('Added friendly Medium link', fStrippedMediumLink2);
 						});
 					}
