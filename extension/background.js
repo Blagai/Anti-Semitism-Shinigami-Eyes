@@ -1,5 +1,4 @@
 // TODO
-// Fix twitter not translating to x bug
 // Fix youtube not understandind /user is a channel bug
 // Fix youtube channels not being coloured
 
@@ -401,7 +400,7 @@ function WriteToAnti(linkUrl, tabId) {
 					}
 					else if (linkUrl.includes("https://twitter.com")) {
 						const strippedTwitterLink = linkUrl.replace("https://twitter.com", '');
-						const TwitterToXLink = linkUrl.replace("https://twitter.xom", 'https://x.com');
+						const TwitterToXLink = linkUrl.replace("https://twitter.com", 'https://x.com');
 					
 						AntiSem.push(TwitterToXLink);
 						chrome.storage.local.set({ AntiSem }, () => {
