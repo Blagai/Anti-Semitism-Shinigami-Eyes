@@ -1,3 +1,8 @@
+// TODO
+// Fix twitter not translating to x bug
+// Fix youtube not understandind /user is a channel bug
+// Fix youtube channels not being coloured
+
 const UserDomains = [
 	"https://www.facebook.com/",
 	"https://www.reddit.com/",
