@@ -6,7 +6,7 @@ function changeToRed(AntiSem) {
 		const href = link.getAttribute('href');
 		if (href) {
 			AntiSem.forEach(domain => {
-				if (href.includes(domain)) {
+				if (href.includes(domain) && !href.includes("/comments/")) {
 					link.style.setProperty('color', 'red', 'important');
 					
 					const twitterElements = link.querySelectorAll('.css-146c3p1, .css-1jxf684');
@@ -32,7 +32,7 @@ function changeToGreen(JewFriend) {
 		const fhref = link.getAttribute('href');
 		if (fhref) {
 			JewFriend.forEach(domain => {
-				if (fhref.includes(domain)) {
+				if (fhref.includes(domain) && !fhref.includes("/comments/")) {
 					link.style.setProperty('color', 'green', 'important');
 					
 					const twitterElements = link.querySelectorAll('.css-146c3p1, .css-1jxf684');
