@@ -4,7 +4,7 @@
 	"version": "0.1.1",
 	"permissions": ["activeTab", "contextMenus", "storage", "scripting"],
 	"manifest_version": 3,
-	"description": "highlights Anti-Semitic and Jewish-friendly subreddits/users/facebook pages/groups with different colors.",
+	"description": "Highlights Anti-Semitic and Jewish-friendly subreddits/users/facebook pages/groups with different colors.",
 	"content_scripts": [
 		{
 			"matches": [
