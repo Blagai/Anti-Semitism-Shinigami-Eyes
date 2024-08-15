@@ -21,7 +21,7 @@ Server version is incomplete and doesn't work unless I manually set the server t
 
 # List of supported browsers:
 * Brave (tested)
-* Chrome (needs to be tested)
+* Chrome (tested)
 * Firefox (in work)
 * Any Chromium browser (theoretical)
 
