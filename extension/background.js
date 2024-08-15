@@ -1,5 +1,4 @@
 // TODO
-// Fix youtube channels not being coloured
 
 const UserDomains = [
 	"https://www.facebook.com/",
