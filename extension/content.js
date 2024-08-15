@@ -24,7 +24,7 @@ function changeToRed(AntiSem) {
 	});
 }
 
-//Function to change link colours of friendly sites
+// Function to change link colours of friendly sites
 function changeToGreen(JewFriend) {
 	const flinks = document.querySelectorAll('a');
 	
