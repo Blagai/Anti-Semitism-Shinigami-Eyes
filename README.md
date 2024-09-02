@@ -26,7 +26,7 @@ Server version is incomplete and doesn't work unless I manually set the server t
 * Any Chromium browser (theoretical)
 
 # Known issues:
-* Marking a facebook group marks the user of everyone inside it the same colour if seen through a post on the group page
-* User marking in TikTok is impossible because they have their own stupid UI
-* The time since upload is what's coloured in TikTok, and not the username
-* FireFox version doesn't work on Google.com and has a weird bug when marking anything it adds random sites to the array
+* Marking a facebook group marks the user of everyone inside it the same colour if seen through a post on the group page — low priority.
+* User marking in TikTok is impossible because they have their own stupid UI — will not bother fixing.
+* The time since upload is what's coloured in TikTok, and not the username - low priority.
+* FireFox version doesn't work on Google.com and has a weird bug when marking anything it adds random sites to the array - high priority.
