@@ -30,3 +30,4 @@ Server version is incomplete and doesn't work unless I manually set the server t
 * User marking in TikTok is impossible because they have their own stupid UI — will not bother fixing.
 * The time since upload is what's coloured in TikTok, and not the username - low priority.
 * FireFox version doesn't work on Google.com and has a weird bug when marking anything it adds random sites to the array - high priority.
+* Youtube sometimes colours incorrect channels — high priority.
