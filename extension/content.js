@@ -9,15 +9,19 @@ function changeToRed(AntiSem) {
 				if (href === domain && !href.includes("/comments/")) {
 					link.style.setProperty('color', 'red', 'important');
 					
-					const twitterElements = link.querySelectorAll('.css-146c3p1, .css-1jxf684');
-					twitterElements.forEach(element => {
-						element.style.setProperty('color', 'red', 'important');
-					});
+					if (window.location.href.includes('x.com') || window.location.href.includes('twitter.com')) {
+						const twitterElements = link.querySelectorAll('.css-146c3p1, .css-1jxf684');
+						twitterElements.forEach(element => {
+							element.style.setProperty('color', 'red', 'important');
+						});
+					}
 					
-					const mediumElements = link.querySelectorAll('.am, .b');
-					mediumElements.forEach(element => {
-						element.style.setProperty('color', 'red', 'important');
-					});
+					if (window.location.href.includes('medium.com')) {
+						const mediumElements = link.querySelectorAll('.am, .b');
+						mediumElements.forEach(element => {
+							element.style.setProperty('color', 'red', 'important');
+						});
+					}
 				}
 			});
 		}
