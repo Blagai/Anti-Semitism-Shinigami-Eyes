@@ -1,4 +1,6 @@
 # Anti-Semitism Shinigami Eyes
+
+# This project has been abandoned until I won't be lazy anymore. If you care about it, feel free to annoy me, I don't mind.
  
 An extension that highlights Anti-Semitic and Jewish-friendly subreddits/users/facebook pages/groups with different colors.
 
