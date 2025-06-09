@@ -4,10 +4,6 @@
  
 An extension that highlights Anti-Semitic and Jewish-friendly subreddits/users/facebook pages/groups with different colors.
 
-Date gathering has started. Use the server version to mark things if you want to submit your data.
-
-Server version is incomplete and doesn't work unless I manually set the server to be online every few minutes. It works locally just the same as the regular version, so if you really want to use it you can.
-
 # List of supported sites:
 * Google ✅
 * DuckDuckGo ✅
