@@ -39,6 +39,9 @@
 				"*://*.google.pt/*",
 				"*://*.google.se/*"
 			],
+			"css": [
+				"content.css"
+			],
 			"js": [
 				"content.js"
 			]

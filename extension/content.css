@@ -1,0 +1,9 @@
+body {
+    --AntisemEyesJewFriend: #00FF00;
+    --AntisemEyesAntisemitic: #FF0000;
+}
+
+.assigned-label-jewfriend, a.assigned-label-jewfriend { color: var(--AntisemEyesJewFriend) !important;}
+.assigned-label-antisemitic, a.assigned-label-antisemitic { color: var(--AntisemEyesAntisemitic) !important;}
+
+.has-assigned-label * { color: inherit !important; }

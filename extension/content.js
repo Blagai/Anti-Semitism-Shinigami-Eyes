@@ -1,89 +1,188 @@
-// Function to change link colours of antisemitic sites
-function changeToRed(AntiSem) {
-	const links = document.querySelectorAll('a');
+var browser = browser || chrome;
 
-	links.forEach(link => {
-		const href = link.getAttribute('href');
-		if (href) {
-			AntiSem.forEach(domain => {
-				if (href === domain && !href.includes("/comments/")) {
-					link.style.setProperty('color', 'red', 'important');
-					
-					if (window.location.href.includes('x.com') || window.location.href.includes('twitter.com')) {
-						const twitterElements = link.querySelectorAll('.css-146c3p1, .css-1jxf684');
-						twitterElements.forEach(element => {
-							element.style.setProperty('color', 'red', 'important');
-						});
+var hostname = typeof (location) != 'undefined' ? location.hostname : '';
+if (hostname.startsWith('www.')) {
+    hostname = hostname.substring(4);
+}
+if (hostname.endsWith('.reddit.com')) hostname = 'reddit.com';
+
+var knownLabels = {};
+var labelsToSolve = [];
+
+
+function ColourLinks()
+{
+	document.querySelectorAll('a').forEach(link => {
+		initLink(link);
+	});
+
+	solvePendingLabels();
+
+	var observer = new MutationObserver(mutationsList => {
+		for (const mutation of mutationsList) {
+			if (mutation.type == 'childList') {
+				for (const node of mutation.addedNodes) {
+					if (node instanceof HTMLAnchorElement) {
+						initLink(node);
 					}
-					
-					if (window.location.href.includes('medium.com')) {
-						const mediumElements = link.querySelectorAll('.am, .b');
-						mediumElements.forEach(element => {
-							element.style.setProperty('color', 'red', 'important');
-						});
+					if (node instanceof HTMLElement) {
+						for (const subnode of node.querySelectorAll('a')) {
+							initLink(subnode);
+						}
 					}
 				}
-			});
+			}
 		}
+		solvePendingLabels();
 	});
-}
 
-// Function to change link colours of friendly sites
-function changeToGreen(JewFriend) {
-	const flinks = document.querySelectorAll('a');
-	
-	flinks.forEach(link => {
-		const fhref = link.getAttribute('href');
-		if (fhref) {
-			JewFriend.forEach(domain => {
-				if (fhref === domain && !fhref.includes("/comments/")) {
-					link.style.setProperty('color', 'green', 'important');
-					
-					const twitterElements = link.querySelectorAll('.css-146c3p1, .css-1jxf684');
-					twitterElements.forEach(element => {
-						element.style.setProperty('color', 'green', 'important');
-					});
-					
-					const mediumElements = link.querySelectorAll('.am, .b');
-					mediumElements.forEach(element => {
-						element.style.setProperty('color', 'green', 'important');
-					});
-				}
-			});
-		}
-	});
-}
-
-// Functiun to observer changes in the DOM
-function observeDomChanges(AntiSem, JewFriend) {
-	const observer = new MutationObserver(() => {
-		changeToRed(AntiSem);
-		changeToGreen(JewFriend);
-	});
-	
 	observer.observe(document.body, {
 		childList: true,
 		subtree: true
 	});
-	
-	// Initial check
-	changeToRed(AntiSem);
-	changeToGreen(JewFriend);
 }
 
-// Fetch the AntiSem array from the background script
-chrome.runtime.sendMessage({ action: "getBlockedDomains" }, (AntiSem) => {
-	console.log('Blocked domains:', AntiSem);
-	
-	chrome.runtime.sendMessage({ action: "getFriendlyDomains" }, (JewFriend) => {
-		console.log('Friendly domains saved:', JewFriend);
-		
-		observeDomChanges(AntiSem, JewFriend);
-	});
-});
+function initLink(a)
+{
+	var identifier = getIdentifier(a);
+	if (!identifier) return;
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-	if (request.action === "showAlert") {
-		alert(request.message);
+	var label = knownLabels[identifier];
+	if (label === undefined)
+	{
+		labelsToSolve.push({ element: a, identifier: identifier });
+		return;
 	}
-});
+	applyLabel(a, identifier);
+}
+
+function applyLabel(a, identifier)
+{
+	if (a.assignedCssLabel)
+	{
+		a.classList.remove('assigned-label-' + a.assignedCssLabel);
+		a.classList.remove('has-assigned-label');
+	}
+
+	a.assignedCssLabel = knownLabels[identifier] || '';
+
+	if (a.assignedCssLabel)
+	{
+		a.classList.add('assigned-label-' + a.assignedCssLabel);
+		a.classList.add('has-assigned-label');
+	}
+}
+
+function solvePendingLabels()
+{
+	if (!labelsToSolve.length) return;
+
+	var uniqueIdentifiers = Array.from(new Set(labelsToSolve.map(x => x.identifier)));
+	var toSolve = labelsToSolve;
+	labelsToSolve = [];
+
+	browser.runtime.sendMessage({ type: 'getLabels', ids: uniqueIdentifiers}, (response) => {
+		for (const item of toSolve)
+		{
+			const label = response[item.identifier];
+			knownLabels[item.identifier] = label || '';
+			applyLabel(item.element, item.identifier);
+			console.log("Applied label for identifier:", item.identifier, "Label:", label);
+		}
+	});
+}
+
+function getIdentifier(link) {
+	try {
+		var k = link instanceof Node ? getIdentifierFromElementImpl(link) : getIdentifierFromURLImpl(tryParseUrl(link));
+		if (!k || k.indexOf('!') != -1) return null;
+		return k.toLowerCase();
+	} catch (e) {
+		console.warn("Error getting identifier for " + link);
+		return null;
+	}
+}
+
+function getIdentifierFromElementImpl(element)
+{
+	if (!element) return null;
+
+	const dataset = element.dataset;
+
+	if (hostname == 'reddit.com') {
+		/* const href = element.getAttribute('href');
+		if (href && href.startsWith('/r/'))
+		{
+			const parts = href.split('/');
+			if (parts.length >= 3 && parts[2])
+			{
+				return `reddit.com/r/${parts[2]}`;
+			}
+			return null;
+		}
+		*/
+
+		const parent = element.parentElement;
+		if (parent && parent.classList.contains('domain') && element.textContent.startsWith('self.')) return null;
+	}
+
+	const href = element.href;
+	if (href && (!href.endsWith('#') || href.includes('&stick='))) return getIdentifierFromURLImpl(tryParseUrl(href));
+	return null;
+}
+
+function tryParseUrl(urlstr)
+{
+	if (!urlstr) return null;
+	try {
+		const url = new URL(urlstr);
+		if (url.protocol != 'http:' && url.protocol != 'https:') return null;
+		return url;
+	} catch (e) {
+		return null;
+	}
+}
+
+function getIdentifierFromURLImpl(url)
+{
+	const identifier = getIdentifierFromUrlIgnoreBridges(url);
+	return identifier;
+}
+
+function getIdentifierFromUrlIgnoreBridges(url)
+{
+	if (!url) return null;
+
+	let host = url.hostname;
+	const searchParams = url.searchParams;
+
+	if (host.startsWith('www.')) host = host.substring(4);
+
+	if (domainIs(host, 'reddit.com'))
+	{
+		const pathname = url.pathname.replace('/u/', '/user/');
+		if (!pathname.startsWith('/user/') && !pathname.startsWith('/r/')) return null;
+		if (pathname.includes('/comments/') && hostname == 'reddit.com') return null;
+		return 'reddit.com' + getPartialPath(pathname, 2);
+	}
+	return null;
+}
+
+function domainIs(host, baseDomain) {
+    if (baseDomain.length > host.length) return false;
+    if (baseDomain.length == host.length) return baseDomain == host;
+    var k = host.charCodeAt(host.length - baseDomain.length - 1);
+    if (k == 0x2E /* . */) return host.endsWith(baseDomain);
+    else return false;
+}
+
+function getPartialPath(path, num)
+{
+	var m = path.split('/')
+	m = m.slice(1, 1 + num);
+	if (m.length && !m[m.length - 1]) m.length--;
+	if (m.length != num) return '!!'
+	return '/' + m.join('/');
+}
+
+ColourLinks();
