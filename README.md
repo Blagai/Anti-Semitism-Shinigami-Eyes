@@ -17,6 +17,7 @@ An extension that highlights Anti-Semitic and Jewish-friendly subreddits/users/f
 * Medium ✅
 * Facebook ✅
 * Tiktok (maybe)
+* Instagram (maybe)
 
 # List of supported browsers:
 
