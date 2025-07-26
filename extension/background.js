@@ -1,7 +1,4 @@
-// TODO code this entire thing.
-
-// Logic should be: Parse data files into sepearate arrays -> Get identifiers to solve from content script ->
-// Check which dataset the identifiers belong to -> Send updated knowledge to content script to apply lables
+// TODO fix bug that causes friendly to be seen as antisemitic
 var browser = browser || chrome;
 
 let antiSet = new Set();
@@ -40,10 +37,12 @@ browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 			if (antiSet.has(id))
 			{
 				result[id] = 'antisemitic';
+				console.log("Found antisemitic label for ID:", id);
 			}
 			else if (friendlySet.has(id))
 			{
 				result[id] = 'jewfriend';
+				console.log("Found friendly label for ID:", id);
 			}
 			else
 			{
