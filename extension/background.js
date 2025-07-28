@@ -8,14 +8,15 @@ async function parseDataFiles() {
 	const antiResponse = await fetch(chrome.runtime.getURL("/data/anti.dat"));
 	const friendlyResponse = await fetch(chrome.runtime.getURL("/data/friendly.dat"));
 
-	const antiText = await antiResponse.text();
-	const friendlyText = await friendlyResponse.text();
+	const antiText = (await antiResponse.text()).toLowerCase();
+	const friendlyText = (await friendlyResponse.text()).toLowerCase();
 
 	antiSet = new Set(antiText.split('\n').map(line => line.trim()).filter(Boolean));
 	friendlySet = new Set(friendlyText.split('\n').map(line => line.trim()).filter(Boolean));
-}
 
-parseDataFiles();
+	console.log(new Array(...antiSet).join(' '));
+	console.log(new Array(...friendlySet).join(' '));
+}
 
 let dataLoaded = false;
 let loadPromise = parseDataFiles().then(() => {
@@ -28,7 +29,6 @@ browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 		console.log("Received request for labels:", message.ids);
 
 		if (!dataLoaded) await loadPromise;
-
 		
 		const result = {};
 

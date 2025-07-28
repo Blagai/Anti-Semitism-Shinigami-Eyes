@@ -5,6 +5,7 @@ if (hostname.startsWith('www.')) {
     hostname = hostname.substring(4);
 }
 if (hostname.endsWith('.reddit.com')) hostname = 'reddit.com';
+if (hostname == 'mobile.twitter.com' || hostname == 'mobile.x.com' || hostname == 'x.com') hostname = 'twitter.com';
 
 var knownLabels = {};
 var labelsToSolve = [];
@@ -45,7 +46,11 @@ function ColourLinks()
 function initLink(a)
 {
 	var identifier = getIdentifier(a);
-	if (!identifier) return;
+	if (!identifier)
+	{
+		if (hostname == 'twitter.com') applyLabel(a, '');
+		return;
+	}
 
 	var label = knownLabels[identifier];
 	if (label === undefined)
@@ -70,6 +75,7 @@ function applyLabel(a, identifier)
 	{
 		a.classList.add('assigned-label-' + a.assignedCssLabel);
 		a.classList.add('has-assigned-label');
+		if (hostname == 'twitter.com') a.classList.remove('u-textInheritColor');
 	}
 }
 
@@ -125,6 +131,21 @@ function getIdentifierFromElementImpl(element)
 		const parent = element.parentElement;
 		if (parent && parent.classList.contains('domain') && element.textContent.startsWith('self.')) return null;
 	}
+	else if (hostname == 'twitter.com')
+	{
+		if (dataset && dataset.expandedUrl) return getIdentifier(dataset.expandedUrl);
+		if (element.href.startsWith('https://t.co/'))
+		{
+			const title = element.title;
+			if (title && (title.startsWith('http://') || title.startsWith('https://'))) return getIdentifier(title);
+			const content = element.textContent;
+			if (!content.includes(' ') && content.includes('.') && !content.includes('...'))
+			{
+				const url = content.startsWith('http://') || content.startsWith('https://') ? content : 'http://' + content;
+				return getIdentifier(url);
+			}
+		}
+	}
 
 	const href = element.href;
 	if (href && (!href.endsWith('#') || href.includes('&stick='))) return getIdentifierFromURLImpl(tryParseUrl(href));
@@ -164,6 +185,10 @@ function getIdentifierFromUrlIgnoreBridges(url)
 		if (!pathname.startsWith('/user/') && !pathname.startsWith('/r/')) return null;
 		if (pathname.includes('/comments/') && hostname == 'reddit.com') return null;
 		return 'reddit.com' + getPartialPath(pathname, 2);
+	}
+	else if (domainIs(host, 'twitter.com') || domainIs(host, 'x.com'))
+	{
+		return 'twitter.com' + getPartialPath(url.pathname, 1);
 	}
 	return null;
 }
